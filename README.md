@@ -8,9 +8,9 @@ What this plugin does is more than simply typing `F,dt,`
 because it recognizes the inclusion relationship of parentheses.
 
 ## History
-This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),\\
-which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),\\
-which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),\\
+This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),  
+which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),  
+which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),  
 which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699).
 
 ## Examples
