@@ -7,10 +7,11 @@ such as `daa`(delete-an-argument) `cia`(change-inner-argument) `via`(select-inne
 What this plugin does is more than simply typing `F,dt,`
 because it recognizes the inclusion relationship of parentheses.
 
-This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),
-which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),
-which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),
-which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699)
+## History
+This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),\\
+which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),\\
+which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),\\
+which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699).
 
 ## Examples
 ```
@@ -37,3 +38,12 @@ which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.p
        function(1, (20*30)+40, somefunc2(<press 'cia' here>3, 4))
        function(1, (20*30)+40, <cursor here>) " sub-level function is deleted because it is a argument in terms of the outer function.
 ```
+
+## Ideas
+- move between args (`[a` - prev arg, `]a` - next arg)
+- shift args (`<a` - move current arg to left, `>a` - move current arg to right)
+
+## Alternatives
+- [vim-argumentative](https://github.com/PeterRincker/vim-argumentative) - argument text object, move cursor between args, shift args to left/right
+- [AndrewRadev/sideways.vim](https://github.com/AndrewRadev/sideways.vim) - shift arg to left/right
+
