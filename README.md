@@ -18,7 +18,7 @@ which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.p
 
 
 ## Examples
-`|` represents cursor position
+Here `|` represents cursor position.
 
 1. Delete in argument: `foo(ba|r, baz)`, press `dia` => `foo(|, baz)`
 2. Delete an argument: `foo(ba|r, baz)`, press `daa` => `foo(|baz)`
