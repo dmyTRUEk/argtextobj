@@ -34,4 +34,5 @@ which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.p
 ## Alternatives
 - [vim-argumentative](https://github.com/PeterRincker/vim-argumentative) - argument text object, move cursor between args, shift args to left/right
 - [AndrewRadev/sideways.vim](https://github.com/AndrewRadev/sideways.vim) - shift arg to left/right
+- [machakann/vim-swap](https://github.com/machakann/vim-swap) - shift arg to left/right, arg swap mode (ala sub-mode)
 
