@@ -2,10 +2,13 @@
 Arguments is also text-objects now!
 
 This plugin provides a text-object `a`(argument).
-You can `d`(delete), `c`(change), `v`(visual select) an argument or inner argument in familiar ways,
-such as `daa`(delete-an-argument) `cia`(change-inner-argument) `via`(select-inner-argument).  
-What this plugin does is more than simply typing `F,dt,`
+- `dia`, `daa` - delete in/an arg
+- `cia`, `caa` - change in/an arg
+- `via`, `vaa` - select in/an arg
+
+What this plugin does is more than simply typing `F,dt,`,
 because it recognizes the inclusion relationship of parentheses.
+
 
 ## History
 This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),  
@@ -13,35 +16,20 @@ which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/
 which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),  
 which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699).
 
+
 ## Examples
-```
-  case1) delete An argument
-      function(int arg1,    ch<press 'daa' here>ar* arg2="a,b,c(d,e)")
-      function(int arg1<cursor here; and if you press 'daa' again..>)
-      function(<cursor>)
+`|` represents cursor position
 
-  case2) change Inner argument
-      function(int arg1,    ch<press 'cia' here>ar* arg2="a,b,c(d,e)")
-      function(int arg1,    <cursor here>)
-      
-  case 3) smart argument recognition (g:argumentobject_force_toplevel = 0)
-       function(1, (20<press 'cia' here>*30)+40, somefunc2(3, 4))
-       function(1, <cursor here>, somefunc2(3, 4))
-       
-       function(1, (20*30)+40, somefunc2(<press 'cia' here>3, 4))
-       function(1, (20*30)+40, somefunc2(<cursor here>4))
+1. Delete in argument: `foo(ba|r, baz)`, press `dia` => `foo(|, baz)`
+2. Delete an argument: `foo(ba|r, baz)`, press `daa` => `foo(|baz)`
+3. Change in argument: `foo(ba|r, baz)`, press `cia`, input `abc`, press `<esc>` => `foo(abc|, baz)`
+4. Select in argument: `foo(ba|r, baz)`, press `via` => `foo(|bar|, baz)`
 
-  case 4) smart argument recognition (g:argumentobject_force_toplevel = 1)
-       function(1, (20<press 'cia' here>*30)+40, somefunc2(3, 4))
-       function(1, <cursor here>, somefunc2(3, 4)) " note that this result is the same of above.
-       
-       function(1, (20*30)+40, somefunc2(<press 'cia' here>3, 4))
-       function(1, (20*30)+40, <cursor here>) " sub-level function is deleted because it is a argument in terms of the outer function.
-```
 
 ## Ideas
 - move between args (`[a` - prev arg, `]a` - next arg)
 - shift args (`<a` - move current arg to left, `>a` - move current arg to right)
+
 
 ## Alternatives
 - [vim-argumentative](https://github.com/PeterRincker/vim-argumentative) - argument text object, move cursor between args, shift args to left/right
