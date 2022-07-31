@@ -14,7 +14,7 @@ function! s:GetOuterFunctionParenthesis(toplevel)
     endfor
 
     let pos_char = <SID>CurChar()
-    if pos_char =~ '['.opening.']'
+    if pos_char =~ '[' . opening . ']'
         normal! l
         return pos_save
     endif
@@ -90,18 +90,18 @@ function! s:GetNextCommaOrEndArgs(arglist, offset, count)
             if c > 1
                 execute "normal! \<C-\>\<C-n>\<Esc>" | " Beep.
             endif
-            return strlen(a:arglist)-1
+            return strlen(a:arglist) - 1
         endif
         let c -= 1
     endwhile
-    return commapos-1
+    return commapos - 1
 endfunction
 
 
 function! s:MoveToNextNonSpace()
     let oldp = getpos('.')
     let moved = 0
-    while <SID>CurChar()=~'\s'
+    while <SID>CurChar() =~ '\s'
         normal! l
         if oldp == getpos('.')
             break
@@ -114,14 +114,14 @@ endfunction
 
 
 function! s:MoveLeft(num)
-    if a:num>0
+    if a:num > 0
         exe 'normal! ' . a:num . 'h'
     endif
 endfunction
 
 
 function! s:MoveRight(num)
-    if a:num>0
+    if a:num > 0
         exe 'normal! ' . a:num . 'l'
     endif
 endfunction
@@ -132,7 +132,7 @@ function! argtextobj#MotionArgument(inner, visual, toplevel)
     let operator = v:operator
     let pos_save = getpos('.')
     let current_c = <SID>CurChar()
-    if current_c==','
+    if current_c == ','
         normal! l
     endif
 
@@ -160,11 +160,11 @@ function! argtextobj#MotionArgument(inner, visual, toplevel)
         endif
         return s:Repeat(cnt, a:inner, a:visual, operator)
     endif
-    let arglist_str  = <SID>GetInnerText(rightup, rightup_pair) " inside ()
-    if line('.')==rightup[1]
+    let arglist_str = <SID>GetInnerText(rightup, rightup_pair) " inside ()
+    if line('.') == rightup[1]
         " left parenthesis in the current line
         " cursor offset from rightup
-        let offset  = getpos('.')[2] - rightup[2] - 1 " -1 for the removed parenthesis
+        let offset  = getpos('.')[2] - rightup[2] - 1   " -1 for the removed parenthesis
     else
         " left parenthesis in a previous line; retrieve the (partial when there's a
         " matching right parenthesis) current line from the arglist_str.
@@ -177,12 +177,12 @@ function! argtextobj#MotionArgument(inner, visual, toplevel)
         let offset  = getpos('.')[2] - 1
     endif
     " replace all parentheses and commas inside them to '_'
-    let arglist_sub  = arglist_str
+    let arglist_sub = arglist_str
     let arglist_sub = substitute(arglist_sub, "'".'\([^'."'".']\{-}\)'."'", '\="(".substitute(submatch(1), ".", "_", "g").")"', 'g') " replace '..' => (__)
     let arglist_sub = substitute(arglist_sub, '\[\([^'."'".']\{-}\)\]', '\="(".substitute(submatch(1), ".", "_", "g").")"', 'g')     " replace [..] => (__)
     let arglist_sub = substitute(arglist_sub, '<\([^'."'".']\{-}\)>', '\="(".substitute(submatch(1), ".", "_", "g").")"', 'g')       " replace <..> => (__)
     let arglist_sub = substitute(arglist_sub, '"\([^'."'".']\{-}\)"', '(\1)', 'g') " replace ''..'' => (..)
-    while stridx(arglist_sub, '(')>=0 && stridx(arglist_sub, ')')>=0
+    while stridx(arglist_sub, '(') >= 0 && stridx(arglist_sub, ')') >= 0
         let arglist_sub = substitute(arglist_sub , '(\([^()]\{-}\))', '\="<".substitute(submatch(1), ",", "_", "g").">"', 'g')
     endwhile
     " the beginning/end of this argument
@@ -202,17 +202,17 @@ function! argtextobj#MotionArgument(inner, visual, toplevel)
         let right -= <SID>MoveToNextNonSpace()
     else
         " aa
-        if thisargbegin==0 && thisargend==strlen(arglist_sub)-1
+        if thisargbegin == 0 && thisargend == strlen(arglist_sub) - 1
             " only single argument
             call <SID>MoveLeft(left)
-        elseif thisargbegin==0
+        elseif thisargbegin == 0
             " head of the list (do not delete '(')
             call <SID>MoveLeft(left)
             let right += 1
             let delete_trailing_space = 1
         else
             " normal or tail of the list
-            call <SID>MoveLeft(left+1)
+            call <SID>MoveLeft(left + 1)
             let right += 1
         endif
     endif
