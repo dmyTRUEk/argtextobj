@@ -1,18 +1,16 @@
-# argtextobj.vim
+# Argument Text Object
+Arguments is also text-objects now!
 
-This is an improved fork of http://www.vim.org/scripts/script.php?script_id=2699
-
-## Changes in this version
-- consider any parenthesis pair from `matchpairs`
-- support multi-line argument lists
-
-## Overview
 This plugin provides a text-object `a`(argument).
-You can d(elete), c(hange), v(select)... an argument or inner argument in familiar ways,
+You can `d`(delete), `c`(change), `v`(visual select) an argument or inner argument in familiar ways,
 such as `daa`(delete-an-argument) `cia`(change-inner-argument) `via`(select-inner-argument).  
-What this plugin does is more than simply typing `F,dt,` because it recognizes the inclusion relationship of parentheses.
+What this plugin does is more than simply typing `F,dt,`
+because it recognizes the inclusion relationship of parentheses.
 
-There is an option to decide whether the motion should go out to toplevel function or not in nested function application.
+This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),
+which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),
+which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),
+which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699)
 
 ## Examples
 ```
