@@ -442,7 +442,7 @@ function! s:FindFirstCorrectBracketOnRight(linecol_initial_cursor_pos)
 endfunction
 
 
-function! argtextobj#VisualSelectAroundArg()
+function! s:GetBoundsForAroundArg()
     let l:pos = getcurpos() " current cursor position
     " echom "pos = " . string(l:pos)
 
@@ -453,16 +453,16 @@ function! argtextobj#VisualSelectAroundArg()
     let l:linecol = s:GetLineAndCol()
     let l:char = s:GetChar(l:linecol)
     if s:IsBracket(l:char) || (l:char == ",")
-        echom "current char is bracket or comma"
-        return
+        echom "this char is bracket or comma"
+        return [[], []]
     endif
 
     " find left and right bounds (it could be brackets or comma)
-    let linecol_left  = s:FindFirstCorrectBracketOnLeft(s:GetLineAndCol())
-    let linecol_right = s:FindFirstCorrectBracketOnRight(s:GetLineAndCol())
+    let linecol_left  = s:FindFirstCorrectBracketOnLeft(l:linecol)
+    let linecol_right = s:FindFirstCorrectBracketOnRight(l:linecol)
     if empty(linecol_left) || empty(linecol_right)
         echom "not inside brackets"
-        return
+        return [[], []]
     endif
     let l:ch_left  = s:GetChar(linecol_left)
     let l:ch_right = s:GetChar(linecol_right)
@@ -515,7 +515,7 @@ function! argtextobj#VisualSelectAroundArg()
 
     elseif (l:ch_left !=# ",") && (l:ch_right !=# ",") && (l:ch_left !=# s:ConvertBracketToLeft(l:ch_right))
         echom "LEFT and RIGHT brackets DOESNT MATCH, which means that bracket sequence is incorrect, so no arg can be selected"
-        return
+        return [[], []]
     endif
 
     " if arg is alone on the line, then also grab "\n" at the end
@@ -543,9 +543,33 @@ function! argtextobj#VisualSelectAroundArg()
     let l:pos_left  = [l:pos[0], linecol_left[0] , linecol_left[1] , l:pos[3]]
     let l:pos_right = [l:pos[0], linecol_right[0], linecol_right[1], l:pos[3]]
 
+    return [l:pos_left, l:pos_right]
+endfunction
+
+
+function! argtextobj#VisualSelectAroundArg()
+    let [l:pos_left, l:pos_right] = s:GetBoundsForAroundArg()
+    if (l:pos_left == []) || (l:pos_right == [])
+        return
+    endif
     call setpos(".", l:pos_left)
     exe 'normal! v'
     call setpos(".", l:pos_right)
+endfunction
+
+function! argtextobj#DeleteAroundArg()
+    call argtextobj#VisualSelectAroundArg()
+    exe 'normal! d'
+endfunction
+
+function! argtextobj#ChangeAroundArg()
+    call argtextobj#VisualSelectAroundArg()
+    call feedkeys('c')
+endfunction
+
+function! argtextobj#YieldAroundArg()
+    call argtextobj#VisualSelectAroundArg()
+    exe 'normal! y'
 endfunction
 
 
