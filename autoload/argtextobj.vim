@@ -249,7 +249,7 @@ endfunction
 
 
 
-function! s:GetLineAndCol()
+function! s:GetCurrentLineAndCol()
     let l:pos = getcurpos() " current cursor position info
     let l:line = l:pos[1]
     let l:col  = l:pos[2]
@@ -332,7 +332,7 @@ function! s:CurPosPrev(linecol)
 endfunction
 
 
-function! s:FindFirstCorrectBracketOnLeft(linecol_initial_cursor_pos)
+function! s:FindFirstCorrectBracketOrCommaOnLeft(linecol_initial_cursor_pos)
     " TODO: make global for configurationability
     let search_limit_max = 1000 " if checked more than this symbols, stop
     " init vars for loop:
@@ -387,7 +387,7 @@ function! s:FindFirstCorrectBracketOnLeft(linecol_initial_cursor_pos)
 endfunction
 
 
-function! s:FindFirstCorrectBracketOnRight(linecol_initial_cursor_pos)
+function! s:FindFirstCorrectBracketOrCommaOnRight(linecol_initial_cursor_pos)
     " TODO: make global for configurationability
     let search_limit_max = 1000 " if checked more than this symbols, stop
     " init vars for loop:
@@ -450,7 +450,7 @@ function! s:GetBoundsForAroundArg()
     let search_limit_max = 1000 " if checked more than this symbols, stop
 
     " current cursor position
-    let l:linecol = s:GetLineAndCol()
+    let l:linecol = s:GetCurrentLineAndCol()
     let l:char = s:GetChar(l:linecol)
     if s:IsBracket(l:char) || (l:char == ",")
         echom "this char is bracket or comma"
@@ -458,8 +458,8 @@ function! s:GetBoundsForAroundArg()
     endif
 
     " find left and right bounds (it could be brackets or comma)
-    let linecol_left  = s:FindFirstCorrectBracketOnLeft(l:linecol)
-    let linecol_right = s:FindFirstCorrectBracketOnRight(l:linecol)
+    let linecol_left  = s:FindFirstCorrectBracketOrCommaOnLeft(l:linecol)
+    let linecol_right = s:FindFirstCorrectBracketOrCommaOnRight(l:linecol)
     if empty(linecol_left) || empty(linecol_right)
         echom "not inside brackets"
         return [[], []]
@@ -469,7 +469,9 @@ function! s:GetBoundsForAroundArg()
 
     " left and right bounds corrections depending on the surrounding characters
     if (l:ch_left ==# ",") && (l:ch_right ==# ",")
+        " , arg ,
         let linecol_left = s:CurPosNext(linecol_left)
+        " TODO: maybe this `if` is redundant?
         if s:IsWhitespace(s:GetChar(s:CurPosNext(linecol_right)))
             let linecol_right = s:CurPosNext(linecol_right)
             while s:IsWhitespace(s:GetChar(linecol_right))
@@ -484,10 +486,12 @@ function! s:GetBoundsForAroundArg()
         endif
 
     elseif (l:ch_left ==# ",") && (l:ch_right !=# ",")
+        " , arg )
         let linecol_right = s:CurPosPrev(linecol_right)
         while s:IsWhitespace(s:GetChar(linecol_right))
             let linecol_right = s:CurPosPrev(linecol_right)
         endwhile
+        " TODO: maybe this `if` is redundant?
         if s:IsWhitespace(s:GetChar(s:CurPosPrev(linecol_left)))
             let linecol_left = s:CurPosPrev(linecol_left)
             while s:IsWhitespace(s:GetChar(linecol_left))
@@ -497,10 +501,12 @@ function! s:GetBoundsForAroundArg()
         endif
 
     elseif (l:ch_left !=# ",") && (l:ch_right ==# ",")
+        " ( arg ,
         let linecol_left = s:CurPosNext(linecol_left)
         while s:IsWhitespace(s:GetChar(linecol_left))
             let linecol_left = s:CurPosNext(linecol_left)
         endwhile
+        " TODO: maybe this `if` is redundant?
         if s:IsWhitespace(s:GetChar(s:CurPosNext(linecol_right)))
             let linecol_right = s:CurPosNext(linecol_right)
             while s:IsWhitespace(s:GetChar(linecol_right))
@@ -510,10 +516,12 @@ function! s:GetBoundsForAroundArg()
         endif
 
     elseif (l:ch_left !=# ",") && (l:ch_right !=# ",") && (l:ch_left ==# s:ConvertBracketToLeft(l:ch_right))
+        " ( arg )
         let linecol_left  = s:CurPosNext(linecol_left)
         let linecol_right = s:CurPosPrev(linecol_right)
 
     elseif (l:ch_left !=# ",") && (l:ch_right !=# ",") && (l:ch_left !=# s:ConvertBracketToLeft(l:ch_right))
+        " [ arg )
         echom "LEFT and RIGHT brackets DOESNT MATCH, which means that bracket sequence is incorrect, so no arg can be selected"
         return [[], []]
     endif
@@ -529,14 +537,11 @@ function! s:GetBoundsForAroundArg()
         endwhile
 
     elseif (l:ch_right ==# ",") && (linecol_left[1] != 0) && (linecol_right[1] == len(getline(linecol_right[0])))
-        " if s:IsWhitespace(s:GetChar(s:CurPosPrev(linecol_left)))
-        " endif
         let linecol_left = s:CurPosPrev(linecol_left)
         while s:IsWhitespace(s:GetChar(linecol_left))
             let linecol_left = s:CurPosPrev(linecol_left)
         endwhile
         let linecol_left = s:CurPosNext(linecol_left)
-
     endif
 
     " set cursor pos
@@ -564,11 +569,13 @@ endfunction
 
 function! argtextobj#ChangeAroundArg()
     call argtextobj#VisualSelectAroundArg()
+    " TODO: dont press `c` if nothing was selected
     call feedkeys('c')
 endfunction
 
 function! argtextobj#YieldAroundArg()
     call argtextobj#VisualSelectAroundArg()
+    " TODO: dont press `y` if nothing was selected
     exe 'normal! y'
 endfunction
 
