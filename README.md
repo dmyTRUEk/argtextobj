@@ -10,20 +10,20 @@ What this plugin does is more than simply typing `F,dt,`,
 because it recognizes the inclusion relationship of parentheses.
 
 
-## History
-This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),  
-which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),  
-which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),  
-which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699).
-
-
 ## Examples
-Here `|` represents cursor position.
+Here `|` denotes cursor position.
 
 1. Delete in argument: `foo(ba|r, baz)`, press `dia` => `foo(|, baz)`
 2. Delete an argument: `foo(ba|r, baz)`, press `daa` => `foo(|baz)`
 3. Change in argument: `foo(ba|r, baz)`, press `cia`, input `abc`, press `<esc>` => `foo(abc|, baz)`
 4. Select in argument: `foo(ba|r, baz)`, press `via` => `foo(|bar|, baz)`
+
+
+## History
+This is an improved fork of [xeruf/argtextobj.vim](https://github.com/xeruf/argtextobj.vim),  
+which is improved fork of [inkarkat/argtextobj.vim](https://github.com/inkarkat/argtextobj.vim),  
+which is improved fork of [vim-scripts/argtextobj.vim](https://github.com/vim-scripts/argtextobj.vim),  
+which is code from [vim.org script_id=2699](https://www.vim.org/scripts/script.php?script_id=2699).
 
 
 ## Ideas
