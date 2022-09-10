@@ -38,11 +38,11 @@ nnoremap <Plug>(argtextobj2_n_yaa) :<C-U>call argtextobj#YieldAroundArg()<CR>
 "onoremap aA <Plug>(argtextobj_o_aA)
 
 xnoremap  aa <Plug>(argtextobj2_x_aa)
-nnoremap daa <Plug>(argtextobj2_x_daa)
-nnoremap caa <Plug>(argtextobj2_x_caa)
-nnoremap yaa <Plug>(argtextobj2_x_yaa)
+nnoremap daa <Plug>(argtextobj2_n_daa)
+nnoremap caa <Plug>(argtextobj2_n_caa)
+nnoremap yaa <Plug>(argtextobj2_n_yaa)
 "xnoremap  ia <Plug>(argtextobj2_x_ia)
-"nnoremap dia <Plug>(argtextobj2_x_dia)
-"nnoremap cia <Plug>(argtextobj2_x_cia)
-"nnoremap yia <Plug>(argtextobj2_x_yia)
+"nnoremap dia <Plug>(argtextobj2_n_dia)
+"nnoremap cia <Plug>(argtextobj2_n_cia)
+"nnoremap yia <Plug>(argtextobj2_n_yia)
 
