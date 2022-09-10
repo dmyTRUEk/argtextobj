@@ -37,12 +37,12 @@ nnoremap <Plug>(argtextobj2_n_yaa) :<C-U>call argtextobj#YieldAroundArg()<CR>
 "onoremap iA <Plug>(argtextobj_o_iA)
 "onoremap aA <Plug>(argtextobj_o_aA)
 
-xnoremap  aa :<C-U>call argtextobj#VisualSelectAroundArg()<CR>
-nnoremap daa :<C-U>call argtextobj#DeleteAroundArg()<CR>
-nnoremap caa :<C-U>call argtextobj#ChangeAroundArg()<CR>
-nnoremap yaa :<C-U>call argtextobj#YieldAroundArg()<CR>
-"xnoremap  ia :<C-U>call argtextobj#VisualSelectInArg()<CR>
-"nnoremap dia :<C-U>call argtextobj#DeleteInArg()<CR>
-"nnoremap cia :<C-U>call argtextobj#ChangeInArg()<CR>
-"nnoremap yia :<C-U>call argtextobj#YieldInArg()<CR>
+xnoremap  aa <Plug>(argtextobj2_x_aa)
+nnoremap daa <Plug>(argtextobj2_x_daa)
+nnoremap caa <Plug>(argtextobj2_x_caa)
+nnoremap yaa <Plug>(argtextobj2_x_yaa)
+"xnoremap  ia <Plug>(argtextobj2_x_ia)
+"nnoremap dia <Plug>(argtextobj2_x_dia)
+"nnoremap cia <Plug>(argtextobj2_x_cia)
+"nnoremap yia <Plug>(argtextobj2_x_yia)
 
