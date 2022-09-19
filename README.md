@@ -1,3 +1,6 @@
+# This repo is depraceted
+Use [dmyTRUEk/argument-text-object](https://github.com/dmyTRUEk/argument-text-object) instead.
+
 # Argument Text Object
 Arguments is also text-objects now!
 
