@@ -13,6 +13,8 @@ xnoremap <Plug>(argtextobj2_x_ia)  :<C-U>call argtextobj#VisualSelectInArg()<CR>
 nnoremap <Plug>(argtextobj2_n_dia) :<C-U>call argtextobj#DeleteInArg()<CR>
 nnoremap <Plug>(argtextobj2_n_cia) :<C-U>call argtextobj#ChangeInArg()<CR>
 nnoremap <Plug>(argtextobj2_n_yia) :<C-U>call argtextobj#YieldInArg()<CR>
+nnoremap <Plug>(argtextobj2_n_na)  :<C-U>call argtextobj#NormalMoveToNextArg()<CR>
+nnoremap <Plug>(argtextobj2_n_pa)  :<C-U>call argtextobj#NormalMoveToPrevArg()<CR>
 
 " keybinds:
 xnoremap  aa <Plug>(argtextobj2_x_aa)
@@ -23,4 +25,6 @@ xnoremap  ia <Plug>(argtextobj2_x_ia)
 nnoremap dia <Plug>(argtextobj2_n_dia)
 nnoremap cia <Plug>(argtextobj2_n_cia)
 nnoremap yia <Plug>(argtextobj2_n_yia)
+nnoremap  [a <Plug>(argtextobj2_n_pa)
+nnoremap  ]a <Plug>(argtextobj2_n_na)
 

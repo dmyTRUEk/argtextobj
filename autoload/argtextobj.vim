@@ -401,3 +401,87 @@ function! argtextobj#YieldInArg()
 endfunction
 
 
+
+function! argtextobj#NormalMoveToNextArg()
+    let l:pos = getcurpos() " current cursor position
+
+    " TODO: make global for configurationability
+    let search_limit_max = 1000 " if checked more than this symbols, stop
+
+    " current cursor position
+    let linecol = s:GetCurrentLineAndCol()
+    let l:char = s:GetChar(linecol)
+    if s:IsBracket(l:char) || (l:char == ",")
+        let l:linecol_next = s:CurPosNext(linecol)
+        let l:char_next = s:GetChar(l:linecol_next)
+        if !s:IsBracket(l:char_next) && l:char_next !=# ","
+            let linecol = l:linecol_next
+        else
+            echom "This char is bracket or comma"
+            return
+        endif
+    endif
+
+    " find left and right bound (it could be brackets or comma)
+    let linecol_left  = s:FindFirstCorrectBracketOrCommaOnLeft(linecol)
+    let linecol_right = s:FindFirstCorrectBracketOrCommaOnRight(linecol)
+    if empty(linecol_left) || empty(linecol_right)
+        echom "Not inside brackets"
+        return
+    endif
+    let l:ch_right = s:GetChar(linecol_right)
+
+    let linecol_right = s:CurPosNext(linecol_right)
+    if linecol_right[1] == 0
+        let linecol_right[1] = 1
+    endif
+    while s:IsWhitespace(s:GetChar(linecol_right))
+        let linecol_right = s:CurPosNext(linecol_right)
+    endwhile
+
+    let l:pos_right = [l:pos[0], linecol_right[0], linecol_right[1], l:pos[3]]
+
+    call setpos('.', l:pos_right)
+endfunction
+
+
+function! argtextobj#NormalMoveToPrevArg()
+    let l:pos = getcurpos() " current cursor position
+
+    " TODO: make global for configurationability
+    let search_limit_max = 1000 " if checked more than this symbols, stop
+
+    " current cursor position
+    let linecol = s:GetCurrentLineAndCol()
+    let l:char = s:GetChar(linecol)
+    if s:IsBracket(l:char) || (l:char == ",")
+        let l:linecol_prev = s:CurPosPrev(linecol)
+        let l:char_prev = s:GetChar(l:linecol_prev)
+        if !s:IsBracket(l:char_prev) && l:char_prev !=# ","
+            let linecol = l:linecol_prev
+        elseif
+            echom "This char is bracket or comma"
+            return
+        endif
+    endif
+
+    " find left and right bound (it could be brackets or comma)
+    let linecol_left  = s:FindFirstCorrectBracketOrCommaOnLeft(linecol)
+    let linecol_right = s:FindFirstCorrectBracketOrCommaOnRight(linecol)
+    if empty(linecol_left) || empty(linecol_right)
+        echom "Not inside brackets"
+        return
+    endif
+    let l:ch_left = s:GetChar(linecol_left)
+
+    let linecol_left = s:CurPosPrev(linecol_left)
+    while s:IsWhitespace(s:GetChar(linecol_left))
+        let linecol_left = s:CurPosPrev(linecol_left)
+    endwhile
+
+    let l:pos_left = [l:pos[0], linecol_left[0], linecol_left[1], l:pos[3]]
+
+    call setpos('.', l:pos_left)
+endfunction
+
+
