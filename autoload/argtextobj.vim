@@ -4,7 +4,6 @@ function! s:GetCurrentLineAndCol()
     let l:pos = getcurpos() " current cursor position info
     let l:line = l:pos[1]
     let l:col  = l:pos[2]
-    " echom "line = " . l:line . "   col = " . l:col
     return [l:line, l:col]
 endfunction
 
@@ -60,7 +59,7 @@ function! s:CurPosNext(linecol)
     if col_ > len(getline(line_))
         let line_ += 1
         if line_ > line('$')
-            " echom "REACHED END OF FILE, EXITING"
+            " echom "Reached end of file, exiting"
             return []
         endif
         " yes, this can be considered as a bug, but other code alredy relies on it, so ...
@@ -75,7 +74,7 @@ function! s:CurPosPrev(linecol)
     if col_ < 1
         let line_ -= 1
         if line_ < 1
-            " echom "REACHED START OF FILE, EXITING"
+            " echom "Reached start of file, exiting"
             return []
         endif
         let col_ = len(getline(line_))
@@ -95,7 +94,6 @@ function! s:FindFirstCorrectBracketOrCommaOnLeft(linecol_initial_cursor_pos)
     let level_bracket_tr = 0 " level for < and >
     while (level_bracket != 0) || (level_bracket_sq != 0) || (level_bracket_tr != 0) || ( (s:GetChar(linecol) !=# ",") && (s:GetChar(linecol) !=# "(") && (s:GetChar(linecol) !=# "[") && (s:GetChar(linecol) !=# "<"))
         let l:current_char = s:GetChar(linecol)
-        " echom "l="line_.", c="col_.", char=".l:current_char.", level_bracket=".level_bracket.", level_bracket_sq=".level_bracket_sq
 
         " change level
         if l:current_char ==# "("
@@ -120,20 +118,14 @@ function! s:FindFirstCorrectBracketOrCommaOnLeft(linecol_initial_cursor_pos)
 
         let search_limit -= 1
         if search_limit < 0
-            " echom "REACHED SEARCH LIMIT for left bracket, EXITING"
+            " echom "Reached search limit for left bracket, exiting"
             return []
         endif
     endwhile
 
-    " echom "level_bracket=".level_bracket.", level_bracket_sq=".level_bracket_sq
-    if level_bracket == 0 && level_bracket_sq == 0
-        " echom "OK"
-    else
-        " echom "NOT OK!!!!"
+    if (level_bracket != 0) || (level_bracket_sq != 0)
         return []
     endif
-
-    " echom "got: line=".line_.", col=".col_.", char there = ".s:GetChar([line_, col_])
 
     return linecol
 endfunction
@@ -150,7 +142,6 @@ function! s:FindFirstCorrectBracketOrCommaOnRight(linecol_initial_cursor_pos)
     let level_bracket_tr = 0 " level for < and >
     while (level_bracket != 0) || (level_bracket_sq != 0) || (level_bracket_tr != 0) || ( (s:GetChar(linecol) !=# ",") && (s:GetChar(linecol) !=# ")") && (s:GetChar(linecol) !=# "]") && (s:GetChar(linecol) !=# ">"))
         let l:current_char = s:GetChar(linecol)
-        " echom "l="line_.", c="col_.", char=".l:current_char.", level_bracket=".level_bracket.", level_bracket_sq=".level_bracket_sq
 
         " change level
         if l:current_char ==# "("
@@ -175,28 +166,22 @@ function! s:FindFirstCorrectBracketOrCommaOnRight(linecol_initial_cursor_pos)
 
         let search_limit -= 1
         if search_limit < 0
-            " echom "REACHED SEARCH LIMIT for right bracket, EXITING"
+            " echom "Reached search limit for right bracket, exiting"
             return []
         endif
     endwhile
 
-    " echom "level_bracket=".level_bracket.", level_bracket_sq=".level_bracket_sq
-    if level_bracket == 0 && level_bracket_sq == 0
-        " echom "OK"
-    else
-        " echom "NOT OK!!!!"
+    if (level_bracket != 0) || (level_bracket_sq != 0)
         return []
     endif
-
-    " echom "got: line=".line_.", col=".col_.", char there = ".s:GetChar([line_, col_])
 
     return linecol
 endfunction
 
 
-function! s:GetBoundsForAroundArg()
+" AnArg aka AroundArg
+function! s:GetBoundsForAnArg()
     let l:pos = getcurpos() " current cursor position
-    " echom "pos = " . string(l:pos)
 
     " TODO: make global for configurationability
     let search_limit_max = 1000 " if checked more than this symbols, stop
@@ -205,7 +190,7 @@ function! s:GetBoundsForAroundArg()
     let l:linecol = s:GetCurrentLineAndCol()
     let l:char = s:GetChar(l:linecol)
     if s:IsBracket(l:char) || (l:char == ",")
-        echom "this char is bracket or comma"
+        echom "This char is bracket or comma"
         return [[], []]
     endif
 
@@ -213,7 +198,7 @@ function! s:GetBoundsForAroundArg()
     let linecol_left  = s:FindFirstCorrectBracketOrCommaOnLeft(l:linecol)
     let linecol_right = s:FindFirstCorrectBracketOrCommaOnRight(l:linecol)
     if empty(linecol_left) || empty(linecol_right)
-        echom "not inside brackets"
+        echom "Not inside brackets"
         return [[], []]
     endif
     let l:ch_left  = s:GetChar(linecol_left)
@@ -304,40 +289,42 @@ function! s:GetBoundsForAroundArg()
 endfunction
 
 
-function! argtextobj#VisualSelectAroundArg()
-    let [l:pos_left, l:pos_right] = s:GetBoundsForAroundArg()
+function! argtextobj#VisualSelectAnArg()
+    let [l:pos_left, l:pos_right] = s:GetBoundsForAnArg()
     if (l:pos_left == []) || (l:pos_right == [])
-        return
+        return 1
     endif
     call setpos(".", l:pos_left)
     exe 'normal! v'
     call setpos(".", l:pos_right)
+    return 0
 endfunction
 
-function! argtextobj#DeleteAroundArg()
-    call argtextobj#VisualSelectAroundArg()
+function! argtextobj#DeleteAnArg()
+    call argtextobj#VisualSelectAnArg()
     exe 'normal! d'
 endfunction
 
-function! argtextobj#ChangeAroundArg()
-    call argtextobj#VisualSelectAroundArg()
-    " TODO: dont press `c` if nothing was selected
+function! argtextobj#ChangeAnArg()
+    let l:result = argtextobj#VisualSelectAnArg()
+    if l:result == 1
+        return
+    endif
     call feedkeys('c')
 endfunction
 
-function! argtextobj#YieldAroundArg()
-    call argtextobj#VisualSelectAroundArg()
-    " TODO: dont press `y` if nothing was selected
+function! argtextobj#YieldAnArg()
+    let l:result = argtextobj#VisualSelectAnArg()
+    if l:result == 1
+        return
+    endif
     exe 'normal! y'
 endfunction
 
 
 
-
-
 function! s:GetBoundsForInArg()
     let l:pos = getcurpos() " current cursor position
-    " echom "pos = " . string(l:pos)
 
     " TODO: make global for configurationability
     let search_limit_max = 1000 " if checked more than this symbols, stop
@@ -346,7 +333,7 @@ function! s:GetBoundsForInArg()
     let l:linecol = s:GetCurrentLineAndCol()
     let l:char = s:GetChar(l:linecol)
     if s:IsBracket(l:char) || (l:char == ",")
-        echom "this char is bracket or comma"
+        echom "This char is bracket or comma"
         return [[], []]
     endif
 
@@ -354,7 +341,7 @@ function! s:GetBoundsForInArg()
     let linecol_left  = s:FindFirstCorrectBracketOrCommaOnLeft(l:linecol)
     let linecol_right = s:FindFirstCorrectBracketOrCommaOnRight(l:linecol)
     if empty(linecol_left) || empty(linecol_right)
-        echom "not inside brackets"
+        echom "Not inside brackets"
         return [[], []]
     endif
 
@@ -365,7 +352,6 @@ function! s:GetBoundsForInArg()
         let linecol_left[1] = 1
     endif
 
-    " TODO
     while s:IsWhitespace(s:GetChar(linecol_left))
         let linecol_left = s:CurPosNext(linecol_left)
     endwhile
@@ -385,11 +371,12 @@ endfunction
 function! argtextobj#VisualSelectInArg()
     let [l:pos_left, l:pos_right] = s:GetBoundsForInArg()
     if (l:pos_left == []) || (l:pos_right == [])
-        return
+        return 1
     endif
     call setpos(".", l:pos_left)
     exe 'normal! v'
     call setpos(".", l:pos_right)
+    return 0
 endfunction
 
 function! argtextobj#DeleteInArg()
@@ -398,14 +385,18 @@ function! argtextobj#DeleteInArg()
 endfunction
 
 function! argtextobj#ChangeInArg()
-    call argtextobj#VisualSelectInArg()
-    " TODO: dont press `c` if nothing was selected
+    let l:result = argtextobj#VisualSelectInArg()
+    if l:result == 1
+        return
+    endif
     call feedkeys('c')
 endfunction
 
 function! argtextobj#YieldInArg()
-    call argtextobj#VisualSelectInArg()
-    " TODO: dont press `y` if nothing was selected
+    let l:result = argtextobj#VisualSelectInArg()
+    if l:result == 1
+        return
+    endif
     exe 'normal! y'
 endfunction
 

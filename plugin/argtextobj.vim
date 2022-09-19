@@ -5,10 +5,10 @@ endif
 let loaded_argument_text_object = 1
 
 " bind plugin's functions to better(?) names:
-xnoremap <Plug>(argtextobj2_x_aa)  :<C-U>call argtextobj#VisualSelectAroundArg()<CR>
-nnoremap <Plug>(argtextobj2_n_daa) :<C-U>call argtextobj#DeleteAroundArg()<CR>
-nnoremap <Plug>(argtextobj2_n_caa) :<C-U>call argtextobj#ChangeAroundArg()<CR>
-nnoremap <Plug>(argtextobj2_n_yaa) :<C-U>call argtextobj#YieldAroundArg()<CR>
+xnoremap <Plug>(argtextobj2_x_aa)  :<C-U>call argtextobj#VisualSelectAnArg()<CR>
+nnoremap <Plug>(argtextobj2_n_daa) :<C-U>call argtextobj#DeleteAnArg()<CR>
+nnoremap <Plug>(argtextobj2_n_caa) :<C-U>call argtextobj#ChangeAnArg()<CR>
+nnoremap <Plug>(argtextobj2_n_yaa) :<C-U>call argtextobj#YieldAnArg()<CR>
 xnoremap <Plug>(argtextobj2_x_ia)  :<C-U>call argtextobj#VisualSelectInArg()<CR>
 nnoremap <Plug>(argtextobj2_n_dia) :<C-U>call argtextobj#DeleteInArg()<CR>
 nnoremap <Plug>(argtextobj2_n_cia) :<C-U>call argtextobj#ChangeInArg()<CR>
