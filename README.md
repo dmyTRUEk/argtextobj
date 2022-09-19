@@ -6,6 +6,7 @@ This plugin provides a text-object `a`(argument).
 - `dia`, `daa` - delete in/an arg
 - `cia`, `caa` - change in/an arg
 - `yia`, `yaa` - yield (copy) in/an arg
+- `]a`, `[a` - jump to next/prev arg
 
 What this plugin does is more than simply typing `F,dt,`,
 because it recognizes the inclusion relationship of parentheses.
@@ -18,10 +19,10 @@ Here `|` denotes cursor position.
 2. Delete an argument: `foo(ba|r, baz)`, press `daa` => `foo(|baz)`
 3. Change in argument: `foo(ba|r, baz)`, press `cia`, input `abc`, press `<esc>` => `foo(abc|, baz)`
 4. Select in argument: `foo(ba|r, baz)`, press `via` => `foo(|bar|, baz)`
+5. Jump to next argument: `foo(ba|r, baz)`, press `]a` => `foo(bar, |baz)`
 
 
 ## Ideas
-- move between args (`[a` - prev arg, `]a` - next arg)
 - shift args (`<a` - move current arg to left, `>a` - move current arg to right)
 
 
