@@ -313,7 +313,7 @@ function! argtextobj#ChangeAnArg()
     call feedkeys('c')
 endfunction
 
-function! argtextobj#YieldAnArg()
+function! argtextobj#YankAnArg()
     let l:result = argtextobj#VisualSelectAnArg()
     if l:result == 1
         return
@@ -392,7 +392,7 @@ function! argtextobj#ChangeInArg()
     call feedkeys('c')
 endfunction
 
-function! argtextobj#YieldInArg()
+function! argtextobj#YankInArg()
     let l:result = argtextobj#VisualSelectInArg()
     if l:result == 1
         return
